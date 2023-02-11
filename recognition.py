@@ -6,7 +6,8 @@ from tqdm import tqdm
 import os
 import pickle as pkl
 
-def train(algorithm="svm"): #classifier train function
+
+def train(algorithm="linear"): #classifier train function
     encodings = []
     face_id = []
 
@@ -16,22 +17,25 @@ def train(algorithm="svm"): #classifier train function
 
     for face in tqdm(master): #loop through subfolders in Dataset folder
         sub=os.listdir("Dataset/" +face)
-        print(face,"'s face training in progress")
+        print(f"{face}'s face training in progress")
         for faceimg in sub: #loop throuigh images present in each sub folder
             file="Dataset/" + face + "/" + faceimg
             vals=emb.encoding(file,"hog") #pass file to encodings function of embedding script to get 128 face encoding values for each face
             encodings.append(vals) #appending encodings to list
             face_id.append(face) #append face name to list
-
-    if algorithm == "svm":
-        clf1 = svm.SVC(gamma='scale') #instantiate svm
-        clf1.fit(encodings,face_id) #train
-        pkl.dump(clf1,open('models/classifier.pkl','wb')) #save
-        print("Trained Model pickled")
-        return clf1 #return model object
+    
+    if algorithm == "linear": #setting the required kernel for svm
+        kern='linear'
+    elif algorithm == "rbf":
+        kern="rbf"
+        
+    clf1 = svm.SVC(kernel=kern,gamma='scale') #instantiate svm
+    clf1.fit(encodings,face_id) #train
+    pkl.dump(clf1,open('models/classifier.pkl','wb')) #save
+    print("SVM Model pickled")
+    return clf1 #return model object
 
         
-    
 def compressor(file): #image compressor function
     
     filepath = os.path.join(os.getcwd(), file)
@@ -58,5 +62,5 @@ def pred(file, model): #prediction function - pass image file and required model
     return res[0] #return 0th index of the list of list result
 
 def loadmodel(): #Load trained model from pkl format
-    model = model=pkl.load(open('models/classifier.pkl', 'rb'))
+    model=pkl.load(open('models/classifier.pkl', 'rb'))
     return model
