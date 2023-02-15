@@ -17,7 +17,7 @@ def train(algorithm="linear"): #classifier train function
 
     for face in tqdm(master): #loop through subfolders in Dataset folder
         sub=os.listdir("Dataset/" +face)
-        print(f"{face}'s face training in progress")
+        print(f"{face}'s face encoding in progress")
         for faceimg in sub: #loop throuigh images present in each sub folder
             file="Dataset/" + face + "/" + faceimg
             vals=emb.encoding(file,"hog") #pass file to encodings function of embedding script to get 128 face encoding values for each face
@@ -29,8 +29,15 @@ def train(algorithm="linear"): #classifier train function
     elif algorithm == "rbf":
         kern="rbf"
         
-    clf1 = svm.SVC(kernel=kern,gamma='scale') #instantiate svm
+    clf1 = svm.SVC(C=7766.325241554844, kernel=kern, gamma='auto') #instantiate svm
     clf1.fit(encodings,face_id) #train
+    
+    '''
+    res=sklearn.model_selection.cross_val_score(clf1, encodings, face_id, n_jobs=-1, cv=3)
+    accuracy=res.mean()
+    print(accuracy)
+    '''
+    
     pkl.dump(clf1,open('models/classifier.pkl','wb')) #save
     print("SVM Model pickled")
     return clf1 #return model object
