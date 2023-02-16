@@ -18,12 +18,6 @@ face_encoder = dlib.face_recognition_model_v1(face_encoder_model) #model which c
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-'''
-def _css_to_rect(css):
-  
-    return dlib.rectangle(css[3], css[0], css[1], css[2])
-'''
-
 
 def face_box(img, model,upsample=1): #function to select face detection model
   
