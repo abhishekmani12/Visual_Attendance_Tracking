@@ -45,7 +45,7 @@ def encoding(file, model="hog", mode="val" ,jitter=1): #function to convert raw 
     emb=[np.array(face_encoder.compute_face_descriptor(image, landmark_set, jitter)) for landmark_set in landmarks] #embeddings
     
     if mode == "val":
-        return emb[0]
+        return emb
     elif mode == "df":
         face_id=file.split("/")[1]
         data={ 'value':emb, 'face_id':face_id}
