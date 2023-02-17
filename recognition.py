@@ -112,10 +112,15 @@ def folder_compressor(folder): #batch compressor function
     return 
 
 def pred(file, model): #prediction function - pass image file and required model parameter
-    vals=emb.encoding(file,"hog") #get encoding
-    res=model.predict([vals]) #predict using encoding
     
-    return res[0] #return 0th index of the list of list result
+    result=[]
+    vals=emb.encoding(file,"hog") #get encoding
+    
+    for value in vals:
+        res=model.predict([value]) #predict using encoding
+        result.append(res[0]) 
+    
+    return result #return 0th index of the list of list result
 
 def load_model(algorithm="svm"): #Load trained model from pkl format
     
