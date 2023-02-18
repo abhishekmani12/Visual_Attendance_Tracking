@@ -60,7 +60,7 @@ def fitter(algorithm="svm", single_path=None): #Get embeddings for the whole dir
             
             for faceimg in sub: #loop through images present in each sub folder
                 file="Dataset/" + face + "/" + faceimg
-                vals=emb.encoding(file,"hog") #pass file to encodings function of embedding script to get 128 face encoding values for each face
+                vals=emb.encoding(file, model="hog", mode="train" ) #pass file to encodings function of embedding script to get 128 face encoding values for each face
                 encodings.append(vals) #appending encodings to list
                 face_id.append(face) #append face name to list
                 
@@ -77,7 +77,7 @@ def fitter(algorithm="svm", single_path=None): #Get embeddings for the whole dir
         
         for faceimg in sub: #loop through images present in each sub folder
             file="Dataset/" + face + "/" + faceimg
-            vals=emb.encoding(file,"hog") 
+            vals=emb.encoding(file, model="hog", mode="train") 
             encodings.append(vals) 
             face_id.append(face) 
              
@@ -114,7 +114,7 @@ def folder_compressor(folder): #batch compressor function
 def pred(file, model): #prediction function - pass image file and required model parameter
     
     result=[]
-    vals=emb.encoding(file,"hog") #get encoding
+    vals=emb.encoding(file, model="hog", mode="test") #get encoding
     
     for value in vals:
         res=model.predict([value]) #predict using encoding
@@ -124,6 +124,7 @@ def pred(file, model): #prediction function - pass image file and required model
 
 def load_model(algorithm="svm"): #Load trained model from pkl format
     
+    model=None
     if algorithm=="svm":
         model=pkl.load(open('models/classifier.pkl', 'rb')) #svm
         
