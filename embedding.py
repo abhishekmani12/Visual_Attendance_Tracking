@@ -34,7 +34,7 @@ def face_landmarks(image, model): #function to generate raw encodings of facial 
     return [pose_predictor(image, face_location) for face_location in face_locations]
 
 
-def encoding(file, model="hog", mode="val" ,jitter=1): #function to convert raw encodings to 128 embeddings
+def encoding(file, model="hog", mode="train" ,jitter=1): #function to convert raw encodings to 128 embeddings
   
     im = PIL.Image.open(file) #PIL format
     im = im.convert('RGB')
@@ -44,7 +44,9 @@ def encoding(file, model="hog", mode="val" ,jitter=1): #function to convert raw 
     
     emb=[np.array(face_encoder.compute_face_descriptor(image, landmark_set, jitter)) for landmark_set in landmarks] #embeddings
     
-    if mode == "val":
+    if mode == "train":
+        return emb[0]
+    elif mode == "test":
         return emb
     elif mode == "df":
         face_id=file.split("/")[1]
