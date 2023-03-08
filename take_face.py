@@ -153,8 +153,4 @@ def take_photo(face_id):
 
     cap.release()
     cv2.destroyAllWindows()
-    return None
-
-print("Ensure that your face is level with the camera and tilt your head slowly")
-name=input("Enter your name")
-take_photo(name) 
+    return face_path
