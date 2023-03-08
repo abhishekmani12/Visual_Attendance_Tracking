@@ -20,5 +20,6 @@ Deep Learning based attendance tracker using visual capture
 
 ## Ongoing:
 * Front-end and DB integration    
-* Creation of main script  
+* Creation of main script
+* Creation of an independent Streamlit script
 * General bug fixes and performance enhancements
