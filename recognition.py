@@ -1,11 +1,14 @@
 import cv2
 import embedding as emb
 from sklearn import svm
+from sklearn import neighbors
 from PIL import Image
 from tqdm import tqdm
 import os
 import pickle as pkl
 import joblib
+import math
+import take_face
 
 
 
@@ -39,13 +42,19 @@ def train(algorithm):
 
 
 
-def fitter(algorithm="svm", single_path=None): #Get embeddings for the whole directory or for a single folder - single_path='Dataset/face_name'
+def fitter(algorithm="svm", take_face_live=False, single_path=None): #Get embeddings for the whole directory or for a single folder - single_path='Dataset/face_name'
        
     encodings=[]
     face_id=[]
     
     emb_path="Embeddings/encodings.sav"
     id_path="Embeddings/face_ids.sav"
+    
+    if(take_face_live): #for training a new face with a live camera
+        
+        print("Ensure that your face is level with the camera and tilt your head slowly")
+        name=input("Enter your name")
+        single_path=take_photo(name) 
     
     if single_path is None:
 
