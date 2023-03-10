@@ -34,10 +34,14 @@ def face_landmarks(image, model): #function to generate raw encodings of facial 
     return [pose_predictor(image, face_location) for face_location in face_locations]
 
 
-def encoding(file, model="hog", mode="train" ,jitter=1): #function to convert raw encodings to 128 embeddings
-  
-    im = PIL.Image.open(file) #PIL format
-    im = im.convert('RGB')
+def encoding(file, imgf=False, model="hog", mode="train" ,jitter=1): #function to convert raw encodings to 128 embeddings
+   
+    if not imgf: #File
+        im = PIL.Image.open(file)#PIL format
+        im = im.convert('RGB')
+    else:
+        im=file
+    
     image=np.array(im) #numpy array
     
     landmarks = face_landmarks(image, model)
