@@ -120,10 +120,10 @@ def folder_compressor(folder): #batch compressor function
     
     return 
 
-def pred(file, model): #prediction function - pass image file and required model parameter
+def pred(file, model, imgf=False): #prediction function - pass image file and required model parameter
     
     result=[]
-    vals=emb.encoding(file, model="hog", mode="test") #get encoding
+    vals=emb.encoding(file, imgf, model="hog", mode="test") #get encoding
     
     for value in vals:
         res=model.predict([value]) #predict using encoding
