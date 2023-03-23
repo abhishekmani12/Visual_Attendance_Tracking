@@ -8,7 +8,7 @@ import os
 import pickle as pkl
 import joblib
 import math
-import take_face
+import take_face as tf
 
 
 
@@ -53,10 +53,13 @@ def fitter(algorithm="svm", take_face_live=False, name=None, single_path=None): 
     if(take_face_live): #for training a new face with a live camera
         
         print("Ensure that your face is level with the camera and tilt your head slowly")
-        name=input("Enter your name")
-        single_path=take_photo(name) 
+        name=input("Enter your name: ")
+        single_path=tf.take_photo(name) 
+        
+    if single_path == "Exists":
+        return None
     
-    if single_path is None:
+    elif single_path is None:
 
         master=os.listdir('Dataset/') #get dataset directory
 
