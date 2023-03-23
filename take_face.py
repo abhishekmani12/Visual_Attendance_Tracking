@@ -19,8 +19,8 @@ def take_photo(face_id):
     if not os.path.exists(face_path):
         os.makedirs(face_path)
     else:
-        print("Face already exists")
-        return None
+        print("Face already exists!")
+        return "Exists"
 
     baseobj=mp.solutions.face_mesh
     base_model=baseobj.FaceMesh(min_detection_confidence=0.4, min_tracking_confidence=0.4)
