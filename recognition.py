@@ -42,7 +42,7 @@ def train(algorithm):
 
 
 
-def fitter(algorithm="svm", take_face_live=False, single_path=None): #Get embeddings for the whole directory or for a single folder - single_path='Dataset/face_name'
+def fitter(algorithm="svm", take_face_live=False, name=None, single_path=None): #Get embeddings for the whole directory or for a single folder - single_path='Dataset/face_name'
        
     encodings=[]
     face_id=[]
