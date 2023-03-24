@@ -143,3 +143,13 @@ def load_model(algorithm="svm"): #Load trained model from pkl format
     elif algorithm=="knn":
         model=pkl.load(open('models/knn_classifier.pkl', 'rb')) #knn
     return model
+
+def mkdir(path):
+    
+    if os.path.exists(path):
+        return "Already exists"
+    else:
+        os.makedirs(path)
+        return "Directory Created"
+
+
