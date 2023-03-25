@@ -28,6 +28,8 @@ def take_photo(face_id):
     track="focused"
     cap =cv2.VideoCapture(0)
     
+    msg=""
+    
     while cap.isOpened():
         fc+=1
         if fc in range(1,10):
@@ -45,7 +47,7 @@ def take_photo(face_id):
         threeD=[] #axis
 
         h, w, c=img.shape
-
+        
         if landmarks.multi_face_landmarks:
             for dat in landmarks.multi_face_landmarks:
                 for i, cood in enumerate(dat.landmark):
@@ -100,46 +102,50 @@ def take_photo(face_id):
                 
                 if fc % 2 == 0:
                     continue
-                
                 if ydegree < -10:  #RIGHT
                     current="right"
                     if not os.path.exists(rp) and track == "right":
                         cv2.imwrite(rp,img)
-                        print("Photo Taken...... Tilt your face to the LEFT")
+                        msg="Tilt your face to the LEFT"
+                        print(msg)
                         count+=1
 
                 elif ydegree > 10: #LEFT
                     current="left"
                     if not os.path.exists(lp) and track == "left":
                         cv2.imwrite(lp,img)
-                        print("Photo Taken")
+                        msg="All photos taken"
+                        print(msg)
                         count+=1
 
                 elif xdegree < -4: #BOTTOM
                     current="bottom"
                     if not os.path.exists(bp) and track == "bottom":
                         cv2.imwrite(bp,img)
-                        print("Photo Taken...... Tilt your face to the RIGHT")
+                        msg="Tilt your face to the RIGHT"
+                        print(msg)
                         count+=1
 
                 elif xdegree > 5: # TOP
                     current="top"
                     if not os.path.exists(tp) and track == "top":
                         cv2.imwrite(tp,img)
-                        print("Photo Taken...... Tilt your face DOWN")
+                        msg="Tilt your face down"
+                        print(msg)
                         count+=1
 
                 else:             #CENTRE
                     current="centre"
                     if not os.path.exists(cp) and track == "centre":
                         cv2.imwrite(cp,img)
-                        print("Photo Taken...... Tilt your face UP")
+                        msg="Tilt your face UP"
+                        print(msg)
                         count+=1
 
                 track=current       
 
-
-                #cv2.putText(img, current, (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        cv2.putText(img, msg, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3, 4)
+                
         cv2.imshow('focus', img)
         
         if count == 5:
