@@ -13,7 +13,9 @@ Deep Learning based attendance tracker using visual capture
 
 * [recognition.py](https://github.com/abhishekmani12/Visual_Attendance_Tracking/blob/main/recognition.py) - Has Training, Prediction and Compression functions. Imports embeddings.py. Contains Computation for SVM/KNN classifier models.  
 
-* [take_face.py](https://github.com/abhishekmani12/Visual_Attendance_Tracking/blob/main/take_face.py) - Responsible for hands-free automatic dataset creation for a new face based on face angle.  
+* [take_face.py](https://github.com/abhishekmani12/Visual_Attendance_Tracking/blob/main/take_face.py) - Responsible for hands-free automatic dataset creation for a new face based on face angle.
+
+* [record.py](https://github.com/abhishekmani12/Visual_Attendance_Tracking/blob/main/record.py) - Temporary script for df manipulation, this serves as the DB for the time being
 
 ## Usecase:
  The system can track attendance on a single face or on a group of faces in a single frame.
