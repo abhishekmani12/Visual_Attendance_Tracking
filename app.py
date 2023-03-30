@@ -38,16 +38,20 @@ if source_index == 0 :
     if st.sidebar.button("Start"):
         stop=st.button("Stop")
         fc=0
-        Name=""
+        Name=None
+        result=None
         queue=[]*2
         queue.insert(0,None)
         model_option="SVM"
         model=rec.load_model(algorithm=model_option.lower())
         temp=""
         cap = cv2.VideoCapture(0)
+        
+        if Name:
+            st.success(f"Face ID: {Name[0]}  STATUS: {result}",  icon="✅")
+        
         while cap.isOpened():
             if cv2.waitKey(1) & 0xFF == ord('f'):
-                print("kkkkkkkkkkkkkkkkkk")
                 break
 
             fc+=1
@@ -65,18 +69,19 @@ if source_index == 0 :
 
             if len(Name) == 1:
                 if not temp == Name[0]:
-                    st.write(Name[0])
+                
                     result=r.update(Name[0])
-                    st.write(result)
+                    st.success(f"Face ID: {Name[0]}  STATUS: {result}",  icon="✅")
 
                 temp=Name[0]
-
+            img=cv2.cvtColor(img, cv2.COLOR_RGB2BGR)    
+            cv2.imshow('Attendance', img)
 
         cap.release()
         cv2.destroyAllWindows()
         
 elif source_index == 1:
-    st.write("in progress")
+    st.info("Work in progress")
                      
                       
 elif source_index == 2:
@@ -88,11 +93,11 @@ elif source_index == 2:
 
     if face_id:
         if os.path.exists(Directory):
-            st.write("Face ID already Exists! Please reselect this option")
+            st.error("Face ID already Exists! Please reselect this option")
             exit()
         else:
             os.makedirs(Directory)
-            st.write("New Face ID!")
+            st.warning("New Face ID!")
 
         if uploaded_files:
             for File in uploaded_files:
@@ -100,9 +105,10 @@ elif source_index == 2:
 
                 with open(save_path, mode='wb') as w:
                     w.write(File.getvalue())
-        
-            rec.fitter(algorithm=models[model_option].lower(), take_face_live=False, name=None, single_path=Directory)
-            st.write("Training Done")       
+            
+            with st.spinner("Training in Progress"):
+                rec.fitter(algorithm=models[model_option].lower(), take_face_live=False, name=None, single_path=Directory)
+            st.success("Training Done", icon="✅")       
        
                       
 elif source_index == 3:
@@ -113,18 +119,23 @@ elif source_index == 3:
 
         if face_id:
             if os.path.exists(Directory):
-                st.write("Face ID already Exists! Please reselect this option")
+                st.error("Face ID already Exists! Please reselect this option")
                 exit()
             else:
-                rec.fitter(algorithm=model_option.lower(), take_face_live=True, name=face_id, single_path=None)
-                st.write("Training New Face done")
+                
+                with st.spinner("Training in Progress. Follow instructions specified in the video output"):
+                    rec.fitter(algorithm=models[model_option].lower(), take_face_live=True, name=face_id, single_path=None)
+                st.success("Training New Face done", icon="✅")
 
 elif source_index == 4:
         
     #entire dataset gets retrained
-        if st.button("Train on the whole Dataset"):               
-            rec.fitter(algorithm="svm", take_face_live=False, name=None, single_path=None)
-            st.write("Training Done")
+        if st.button("Train on the whole Dataset"):
+            
+            with st.spinner("Training in Progress"):
+                rec.fitter(algorithm="svm", take_face_live=False, name=None, single_path=None)
+                
+            st.success("Training Done", icon="✅")
                  
 
 elif source_index == 5:
@@ -134,4 +145,5 @@ elif source_index == 5:
                       
         if st.button("Save current record to a new file"):
             output=r.save()
-            st.write(output)
+            st.success(output, icon="✅")
+        
