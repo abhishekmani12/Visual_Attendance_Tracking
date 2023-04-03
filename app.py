@@ -35,8 +35,8 @@ st.sidebar.write("####")
 
 
 if source_index == 0 :
+    ph = st.empty()
     if st.sidebar.button("Start"):
-        stop=st.button("Stop")
         fc=0
         Name=None
         result=None
@@ -45,21 +45,24 @@ if source_index == 0 :
         model_option="SVM"
         model=rec.load_model(algorithm=model_option.lower())
         temp=""
-        cap = cv2.VideoCapture(0)
         
-        if Name:
-            st.success(f"Face ID: {Name[0]}  STATUS: {result}",  icon="✅")
+        #@st.cache(allow_output_mutation=True, suppress_st_warning=True)
+        @st.cache_resource
+        def get_cap():
+            return cv2.VideoCapture(0)
+            
+        cap=get_cap()    
+        frameST = st.empty()
         
-        while cap.isOpened():
-            if cv2.waitKey(1) & 0xFF == ord('f'):
-                break
+        while True:
+            
+            ret, img = cap.read()
 
             fc+=1
 
             if fc in range(1, 10):
                 continue
 
-            _, img=cap.read()
 
             img=cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -69,16 +72,20 @@ if source_index == 0 :
 
             if len(Name) == 1:
                 if not temp == Name[0]:
-                
                     result=r.update(Name[0])
-                    st.success(f"Face ID: {Name[0]}  STATUS: {result}",  icon="✅")
-
+                    ph.empty()
+                    with ph.container():
+                        st.success(f"Face ID: {Name[0]}  STATUS: {result}",  icon="✅")
                 temp=Name[0]
+                
+                
+            if not ret:
+                cv.waitkey(3000)
+                cap.release()
+                break
             img=cv2.cvtColor(img, cv2.COLOR_RGB2BGR)    
-            cv2.imshow('Attendance', img)
-
-        cap.release()
-        cv2.destroyAllWindows()
+            frameST.image(img, channels="BGR")
+            
         
 elif source_index == 1:
     st.info("Work in progress")
@@ -146,4 +153,3 @@ elif source_index == 5:
         if st.button("Save current record to a new file"):
             output=r.save()
             st.success(output, icon="✅")
-        
