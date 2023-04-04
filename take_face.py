@@ -9,6 +9,7 @@ def take_photo(face_id):
     count=0
     fc=1
     track=None
+    current=""
     
     if face_id is None:
         print("Please enter your face id")
@@ -32,17 +33,19 @@ def take_photo(face_id):
     
     while cap.isOpened():
         fc+=1
-        if fc in range(1,10):
-            continue
         
         s, img=cap.read()
-
+        
+        if fc in range(1,100) or fc%2 == 0:
+            continue
+        
+        
         img=cv2.cvtColor(img,cv2.COLOR_BGR2RGB) #fm requires rgb input
         landmarks=base_model.process(img) #get keypoint landmarks mesh for a face
         img=cv2.cvtColor(img,cv2.COLOR_RGB2BGR)
 
         #Extracting eye edge(left - 33, right - 263), nose(1), mouth edge(left - 61, right - 291), chin(199) keypoint landmarks
-
+        
         twoD=[] #x,y
         threeD=[] #axis
 
@@ -100,8 +103,9 @@ def take_photo(face_id):
                 tp=face_path+"/"+face_id+"-top.png"
                 cp=face_path+"/"+face_id+"-centre.png"
                 
-                if fc % 2 == 0:
-                    continue
+                trash_path=face_path+"/"+face_id+"-trash.png"
+                
+                    
                 if ydegree < -10:  #RIGHT
                     current="right"
                     if not os.path.exists(rp) and track == "right":
