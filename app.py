@@ -13,6 +13,22 @@ import record as r
 import take_face as tk
 
 
+import cv2
+import pandas as pd
+import os
+from io import StringIO
+from pathlib import Path
+
+import streamlit as st
+import ffmpeg
+
+import embedding as emb
+import recognition as rec
+import record as r
+import take_face as tk
+        
+    
+    
 model_option=0
 model=None
 st.title("Visual Attendance Tracker")
@@ -35,8 +51,12 @@ st.sidebar.write("####")
 
 
 if source_index == 0 :
-    ph = st.empty()
-    if st.sidebar.button("Start"):
+        ph = st.empty()
+        start=st.sidebar.checkbox('Start')
+        
+        frameST = st.image([])
+        cap = cv2.VideoCapture(0)
+        
         fc=0
         Name=None
         result=None
@@ -46,15 +66,8 @@ if source_index == 0 :
         model=rec.load_model(algorithm=model_option.lower())
         temp=""
         
-        #@st.cache(allow_output_mutation=True, suppress_st_warning=True)
-        @st.cache_resource
-        def get_cap():
-            return cv2.VideoCapture(0)
-            
-        cap=get_cap()    
-        frameST = st.empty()
         
-        while True:
+        while start:
             
             ret, img = cap.read()
 
@@ -78,13 +91,14 @@ if source_index == 0 :
                         st.success(f"Face ID: {Name[0]}  STATUS: {result}",  icon="✅")
                 temp=Name[0]
                 
-                
-            if not ret:
-                cv.waitkey(3000)
-                cap.release()
-                break
             img=cv2.cvtColor(img, cv2.COLOR_RGB2BGR)    
             frameST.image(img, channels="BGR")
+            
+        else:
+            cap.release()
+            ph.empty()
+            with ph.container():
+                st.warning("Attendance Tracking is stopped")
             
         
 elif source_index == 1:
