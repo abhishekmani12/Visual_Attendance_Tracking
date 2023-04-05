@@ -17,13 +17,16 @@ def train(algorithm):
     #loading embedding data
     encodings=joblib.load('Embeddings/encodings.sav')
     face_id=joblib.load('Embeddings/face_ids.sav')
+    pkl_svm='models/svm_classifier.pkl'
+    pkl_knn='models/knn_classifier.pkl'
     
     if algorithm == "svm": #setting the required kernel for svm
         
         clf1 = svm.SVC(C=7766.325241554844, kernel="rbf", gamma='auto') #instantiate svm
         clf1.fit(encodings,face_id) #train
-        
-        pkl.dump(clf1,open('models/svm_classifier.pkl','wb')) #save
+        if os.path.exists(pkl_svm):
+            os.remove(pkl_svm)
+        pkl.dump(clf1,open(pkl_svm,'wb')) #save
         print("SVM Model pickled")
         
         return clf1 #return model object
@@ -33,8 +36,9 @@ def train(algorithm):
         n=int(round(math.sqrt(len(encodings)))) #get number of neighbors - param
         knn=neighbors.KNeighborsClassifier(n_neighbors=n, weights='distance')
         knn.fit(encodings, face_id)
-        
-        pkl.dump(knn,open('models/knn_classifier.pkl','wb')) #save
+        if os.path.exists(pkl_knn):
+            os.remove(pkl_knn)
+        pkl.dump(knn,open(pkl_knn,'wb')) #save
         print("KNN Model pickled")
         
         return knn #return model object
@@ -53,7 +57,8 @@ def fitter(algorithm="svm", take_face_live=False, name=None, single_path=None): 
     if(take_face_live): #for training a new face with a live camera
         
         print("Ensure that your face is level with the camera and tilt your head slowly")
-        name=input("Enter your name: ")
+        if name is None:
+            name=input("Enter your name: ")
         single_path=tf.take_photo(name) 
         
     if single_path == "Exists":
@@ -143,13 +148,5 @@ def load_model(algorithm="svm"): #Load trained model from pkl format
     elif algorithm=="knn":
         model=pkl.load(open('models/knn_classifier.pkl', 'rb')) #knn
     return model
-
-def mkdir(path):
-    
-    if os.path.exists(path):
-        return "Already exists"
-    else:
-        os.makedirs(path)
-        return "Directory Created"
 
 
