@@ -16,7 +16,7 @@ Deep Learning based attendance tracker using visual capture
 * [take_face.py](https://github.com/abhishekmani12/Visual_Attendance_Tracking/blob/main/take_face.py) - Responsible for hands-free automatic dataset creation for a new face based on face angle.
 
 * [record.py](https://github.com/abhishekmani12/Visual_Attendance_Tracking/blob/main/record.py) - Temporary script for df manipulation, this serves as the DB for the time being
-* [app.py]() - Main Streamlit script which integrates all the other scripts for a demo
+* [app.py](https://github.com/abhishekmani12/Visual_Attendance_Tracking/blob/main/app.py) - Main Streamlit script which integrates all the other scripts for a demo
 
 ## Usecase:
  The system can track attendance on a single face or on a group of faces in a single frame.
