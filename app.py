@@ -297,7 +297,7 @@ elif source_index == 4:
             
             with st.spinner("Training in Progress"):
                 rec.fitter(algorithm="svm", take_face_live=False, name=None, single_path=None)
-                
+                r.set_new()
             st.success("Training Done", icon="✅")
                  
 
