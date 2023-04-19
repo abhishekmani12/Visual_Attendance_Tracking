@@ -19,7 +19,8 @@ Deep Learning based attendance tracker using visual capture
 * [app.py](https://github.com/abhishekmani12/Visual_Attendance_Tracking/blob/main/app.py) - Main Streamlit script which integrates all the other scripts for a demo
 
 ## Usecase:
- The system can track attendance on a single face or on a group of faces in a single frame.
+ The system can track attendance on a single face or on a group of faces in a single frame.  
+ It requires 5 images of a person's face in various angles for effective training.
 
 ## Ongoing:
 * Front-end and DB integration  
