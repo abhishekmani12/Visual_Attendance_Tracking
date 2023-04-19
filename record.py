@@ -12,7 +12,15 @@ def update_global():
     Template_df=pd.read_csv("attendance.csv")
     global curr_df
     curr_df=Template_df.copy()
+    
+def set_new():
 
+    id_path="Embeddings/face_ids.sav"
+    face_id=pd.Series(joblib.load(id_path)).unique()
+    df=pd.DataFrame(face_id,columns=['Face_id'])
+    df.insert(1,'Status','absent')
+    df.to_csv("attendance.csv",index=False)
+    update_global()
 
 update_global()
 
