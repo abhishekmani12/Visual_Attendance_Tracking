@@ -143,7 +143,7 @@ def load_model(algorithm="svm"): #Load trained model from pkl format
     
     model=None
     if algorithm=="svm":
-        model=pkl.load(open('models/classifier.pkl', 'rb')) #svm
+        model=pkl.load(open('models/svm_classifier.pkl', 'rb')) #svm
         
     elif algorithm=="knn":
         model=pkl.load(open('models/knn_classifier.pkl', 'rb')) #knn
