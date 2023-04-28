@@ -22,7 +22,4 @@ Deep Learning based attendance tracker using visual capture
  The system can track attendance on a single face or on a group of faces in a single frame.  
  It requires 5 images of a person's face in various angles for effective training.
 
-## Ongoing:
-* Front-end and DB integration  
-* Integration of Optuna Finetuning during training process
-* General bug fixes and performance enhancements
+
