@@ -296,7 +296,7 @@ elif source_index == 4:
         if st.button("Train on the whole Dataset"):
             
             with st.spinner("Training in Progress"):
-                rec.fitter(algorithm="svm", take_face_live=False, name=None, single_path=None)
+                rec.fitter(algorithm=models[model_option].lower(), take_face_live=False, name=None, single_path=None)
                 r.set_new()
             st.success("Training Done", icon="✅")
                  
